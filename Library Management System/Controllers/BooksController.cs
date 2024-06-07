@@ -147,7 +147,7 @@ namespace Library_Management_System.Controllers
         {
             var existingbook = container.GetItemLinqQueryable<BookEntity>(true).Where(q => q.UId == book.BookUId && q.Active == true && q.Archieve == false).FirstOrDefault();
             existingbook.Active = false;
-            existingbook.Active = true;
+            existingbook.Archieve = true;
             await container.ReplaceItemAsync(existingbook, existingbook.UId);
             existingbook.Id = Guid.NewGuid().ToString();
             existingbook.Active = true;
