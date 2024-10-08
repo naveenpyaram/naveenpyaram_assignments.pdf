@@ -1,133 +1,114 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Markup;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-namespace Assignment1
-{
-    public class Tasks 
-    {
-        public string title;
-        public string description;
-        public Tasks() { }
-        public Tasks(string title, string description) 
-        {
-            this.title = title;
-            this.description = description;
-        }
-        public override string ToString()
-        {
-            return $"title : {title}, description : {description}";
-        }
+public class Tasks {
 
+    public String title;
+    public String description;
+
+    public Tasks() {}
+
+    public Tasks(String title, String description) {
+        this.title = title;
+        this.description = description;
     }
-    public class Program 
-    {
-       static  List<Tasks> values = new List<Tasks>();
-        static void Main(string[] args)
-        {
-            Console.WriteLine("1. Addtask ");
-            Console.WriteLine("2. Updatetask ");
-            Console.WriteLine("3.Deletetask ");
-            Console.WriteLine("4. Readtask ");
-            Console.WriteLine("5. Exit");
-            bool exit = true;
-            while (exit)
-            {
-                Console.WriteLine("Choose an option: ");
-                int choice = Convert.ToInt32(Console.ReadLine());
-              
-                switch (choice)
-                {
-                    case 1:
-                        create();
-                        break;
-                    case 2:
-                        update();
-                        break;
-                    case 3:
-                        delete();
-                        break;
-                    case 4:
-                        read();
-                        break;
-                    case 5:
-                        exit = false;
-                        break;
-                    default:
-                        Console.WriteLine("Invalid input, please try again");
-                        break;
-                }
-            }
-            Console.WriteLine("Exititng the application");
-            Console.ReadLine();
-        }
-        public static void create()
-        {
-            Console.WriteLine("enter title :");
-            string Title = Console.ReadLine();
-            Console.WriteLine("enter description :");
-            string Description = Console.ReadLine();
-            Tasks t1 = new Tasks(Title, Description);
-            values.Add(t1);
-            Console.WriteLine("task and desciption added succesfully");
-        }
-        public static void update()
-        {
-            Console.WriteLine("Enter the index of task to be updated");
-            int index = Convert.ToInt32(Console.ReadLine());
 
-            if (index <= 0 && index >= values.Count)
-            {
-                Console.WriteLine("Invalid index");
-                return;
-            }
-            else
-            {
-                Console.WriteLine("Enter new title");
-                string newTitle = Console.ReadLine();
-                Console.WriteLine("Enter new description");
-                string newDescription = Console.ReadLine();
-                values[index].title = newTitle;
-                values[index].description = newDescription;
-                Console.WriteLine("task and description updated succesfully");
-            }
-        }
-        public static void delete()
-        {
-            Console.WriteLine("Enter the index of task to be deleted");
-            int index = Convert.ToInt32(Console.ReadLine());
+    @Override
+    public String toString() {
+        return "Title: " + title + ", Description: " + description;
+    }
 
-            if (index <= 0 && index >= values.Count)
-            {
-                Console.WriteLine("Invalid index");
-                return;
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<Tasks> tasks = new ArrayList<>();
+        boolean exit = true;
+
+        while (exit) {
+            System.out.println("1. Add Task");
+            System.out.println("2. Update Task");
+            System.out.println("3. Delete Task");
+            System.out.println("4. Read Tasks");
+            System.out.println("5. Exit");
+
+            System.out.print("Choose an option: ");
+            int choice = Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+                case 1:
+                    create(scanner, tasks);
+                    break;
+                case 2:
+                    update(scanner, tasks);
+                    break;
+                case 3:
+                    delete(scanner, tasks);
+                    break;
+                case 4:
+                    read(tasks);
+                    break;
+                case 5:
+                    exit = false;
+                    break;
+                default:
+                    System.out.println("Invalid input, please try again");
             }
-            else
-            {
-                values.RemoveAt(index);
-                Console.WriteLine("task and description deleted succesfully");
-            }
-           
         }
-        public static void read()
-        {
-            if(values.Count == 0)
-            {
-                Console.WriteLine("This list is empty");
-            }
-            else
-            {
-                Console.WriteLine("task and description in the list");
-                for(int i = 0; i < values.Count; i++)
-                {
-                    Console.WriteLine($"{i}.{values[i]}");
-                }
+
+        System.out.println("Exiting the application");
+        scanner.close();
+    }
+
+    public static void create(Scanner scanner, ArrayList<Tasks> tasks) {
+        System.out.print("Enter title: ");
+        String title = scanner.nextLine();
+        System.out.print("Enter description: ");
+        String description = scanner.nextLine();
+
+        Tasks task = new Tasks(title, description);
+        tasks.add(task);
+        System.out.println("Task and description added successfully");
+    }
+
+    public static void update(Scanner scanner, ArrayList<Tasks> tasks) {
+        System.out.print("Enter the index of task to be updated: ");
+        int index = Integer.parseInt(scanner.nextLine());
+
+        if (index < 0 || index >= tasks.size()) {
+            System.out.println("Invalid index");
+            return;
+        }
+
+        System.out.print("Enter new title: ");
+        String newTitle = scanner.nextLine();
+        System.out.print("Enter new description: ");
+        String newDescription = scanner.nextLine();
+
+        tasks.get(index).title = newTitle;
+        tasks.get(index).description = newDescription;
+        System.out.println("Task and description updated successfully");
+    }
+
+    public static void delete(Scanner scanner, ArrayList<Tasks> tasks) {
+        System.out.print("Enter the index of task to be deleted: ");
+        int index = Integer.parseInt(scanner.nextLine());
+
+        if (index < 0 || index >= tasks.size()) {
+            System.out.println("Invalid index");
+            return;
+        }
+
+        tasks.remove(index);
+        System.out.println("Task and description deleted successfully");
+    }
+
+    public static void read(ArrayList<Tasks> tasks) {
+        if (tasks.isEmpty()) {
+            System.out.println("This list is empty");
+        } else {
+            System.out.println("Tasks and descriptions in the list:");
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println(i + ". " + tasks.get(i));
             }
         }
-  
     }
 }
